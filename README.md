@@ -2,8 +2,6 @@
 
 *A Data for Life 2026 Hackathon project for coordinating donations between donors and organisations.*
 
-[Try 3goods](https://3goods.vercel.app/)
-
 [<img width="1440" alt="Updated 3goods landing page" src="./landing-updated.svg" />](./landing-updated.svg)
 
 ## Why we built it
