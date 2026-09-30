@@ -46,6 +46,30 @@ Python data-processing scripts combine disaster exposure, regional poverty proxi
 
 [<img width="1440" alt="3goods map showing the invite a facility flow in Thai Binh" src="./map-invite.svg" />](./map-invite.svg)
 
+## Run locally
+
+The app lives in `3goods/`. You need Node.js and npm, and a Supabase project of your own. The repo does not pin a Node version. This is a hackathon prototype, not a setup for real donor or organisation data: it has no user authentication, and the supplied database policies let the public key read and write the demo tables.
+
+```bash
+git clone https://github.com/fresfrida/data-4-life.git
+cd data-4-life/3goods
+npm ci
+cp .env.example .env.local
+```
+
+In `.env.local`, fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from your Supabase project's API settings. `VITE_DEFAULT_LANGUAGE=en` sets the first-visit language unless the visitor has chosen one already. Use the public anon key only. Never put a service-role key in a `VITE_` variable, since Vite includes it in the browser build.
+
+Run `supabase/schema.sql` in your own project's SQL Editor to create the demo tables and policies. Before adding demo records, insert the eight category names from `src/data/categories.js` into the `categories` table; `npm run db:seed` reads those rows by name and stops if they are missing. The seed script writes demo records to whichever project URL you put in `.env.local`, so check that it is your own project before running it.
+
+```bash
+npm run db:seed
+npm run dev
+```
+
+Open the URL Vite prints. The donation flows need Supabase. The relief map can still use the bundled data in `public/data/`: the Vite development server does not serve this repo's Vercel `/api` functions, so if `VITE_MAP_API_BASE_URL` is left empty, the map falls back to that snapshot and labels it. To use the deployed map API during local development, set that variable to `https://3goods.vercel.app`.
+
+`npm test` runs the Node tests. `npm run build` checks the translation keys and builds the site.
+
 ## Please enjoy using the site
 
 The prototype is live at: [3goods.vercel.app](https://3goods.vercel.app/)
